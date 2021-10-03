@@ -1,0 +1,28 @@
+.color{
+    opacity: 0.7;
+    position: relative;
+    z-index: 1;
+}
+
+#logo{
+    margin: 0px 0px 0px 50px;
+    position: relative;
+    z-index: -1;
+}
+
+#login { 
+    color: white;
+}
+
+#signup { 
+    color: white;
+}
+
+#mainbody{  
+    margin: -80px 0px 0px 0px;
+}
+
+#footer{
+    opacity: 0.7;
+    margin: -20px 0px 0px 0px;
+}
