@@ -1,0 +1,56 @@
+.color{
+    opacity: 0.7;
+    position: relative;
+    z-index: 1;
+}
+
+#logo{
+    margin: 0px 0px 0px 50px;
+    position: relative;
+    z-index: -1;
+}
+
+#login { 
+    color: white;
+}
+
+#signup { 
+    color: white;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+}
+
+#login .container #login-row #login-column #login-box {
+    margin: 100px 0px 180px 150px;
+    max-width: 350px;
+    height: 400px; 
+    box-shadow: 3px 8px 18px 3px red;
+    background-color: #EAEAEA;
+}
+
+#login .container #login-row #login-column #login-box #login-form {
+    padding: 20px;
+}
+
+#login .container #login-row #login-column #login-box #login-form #register-link {
+    margin-top: 130px;
+}
+
+.form-group{
+    margin: 20px 0px 0px 0px;
+}
+
+.submit{
+    margin: 100px 20px 0px 0px;
+    float: right;
+    color: cornsilk;
+}
+
+#footer{
+    opacity: 0.7;
+    margin: -20px 0px 0px 0px;
+}
