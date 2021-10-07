@@ -10,11 +10,11 @@
     z-index: -1;
 }
 
-#login { 
+#login {
     color: white;
 }
 
-#signup { 
+#signup {
     color: white;
 }
 
@@ -27,7 +27,7 @@ body {
 #login .container #login-row #login-column #login-box {
     margin: 100px 0px 180px 150px;
     max-width: 350px;
-    height: 500px; 
+    height: 500px;
     box-shadow: 3px 8px 18px 3px red;
     background-color: #EAEAEA;
 }
