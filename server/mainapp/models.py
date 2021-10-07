@@ -12,3 +12,9 @@ class UserData:
         """
         client = pymongo.MongoClient(os.getenv("MONGO_URI"))
         self.db = client[os.getenv("MONGO_DB")][os.getenv("DATA_COLLECTION")]
+
+    def insert_user(self, name: str, email: str, password: str) -> None:
+        pass
+
+    def validate_user(self, email: str, password: str) -> bool:
+        pass
