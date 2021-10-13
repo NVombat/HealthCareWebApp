@@ -33,7 +33,6 @@
                     <form id="login-form" class="form" action="" method="post">
                         {% csrf_token %}
 
-                        
                         <h3 class="text-center text-info">Schedule appointment</h3>
                         <h6>Booking by: {Insert name here using session variables}</h6>
                         <div class="form-group">
@@ -50,7 +49,6 @@
                         </div>
                         <div class="form-group">
                             <label for="drop" class="text-info">Request for doctor:</label><br>
-                            
                             <select name="cars" id="cars" class="form-control" style="appearance: default;">
                                 <option value="volvo">DR1</option>
                                 <option value="saab">DR2</option>
@@ -63,6 +61,7 @@
                             <input type="submit" name="Submit" class="btn btn-info btn-md submit" value="Submit">
                         </div>
                         <br>
+                        <p id="error-msg"> {{error}} </p>
                     </form>
                 </div>
             </div>
