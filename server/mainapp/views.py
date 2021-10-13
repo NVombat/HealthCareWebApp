@@ -5,7 +5,7 @@ from .errors import (
     UserAlreadyExistsError,
     UserDoesNotExistError,
 )
-from . import User
+from . import s, User
 
 
 def home(request):
@@ -59,7 +59,8 @@ def login(request):
         try:
             if User.check_hash(email, password):
                 print("Login Successful")
-                return redirect("/")
+                s.email = email
+                return redirect("/booking")
 
         except InvalidUserCredentialsError as e:
             return render(request, "login.html", {"error": str(e)})
@@ -71,4 +72,10 @@ def login(request):
 
 
 def booking(request):
-    return render(request, "booking.html")
+    if request.POST:
+        # TODO
+        pass
+    else:
+        if hasattr(s, "email"):
+            return render(request, "booking.html", {"email": s.email})
+        return render(request, "booking.html")
