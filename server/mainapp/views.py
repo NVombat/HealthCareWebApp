@@ -29,9 +29,9 @@ def signup(request):
             try:
                 User.insert_user(name, email, password)
                 print("Data Inserted Successfully")
-                return render(
-                    request, "login.html", {"error": "Sign Up Successful"}
-                )
+                s.error = "Sign Up Successful"
+                return redirect("/login")
+
             except UserAlreadyExistsError as e:
                 return render(request, "login.html", {"error": str(e)})
 
@@ -68,7 +68,10 @@ def login(request):
         except UserDoesNotExistError as e:
             return render(request, "login.html", {"error": str(e)})
 
-    return render(request, "login.html")
+    else:
+        if hasattr(s, "error"):
+            return render(request, "login.html", {"error": s.error})
+        return render(request, "login.html")
 
 
 def booking(request):

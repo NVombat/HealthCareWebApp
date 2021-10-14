@@ -41,13 +41,13 @@
                             <label for="password" class="text-info">Password:</label><br>
                             <input type="password" name="password" id="password" class="form-control" required>
                         </div>
+                        <p id="error-msg" style="color:red;"> {{error}} </p>
                         <div class="form-group">
                             <input type="submit" name="Submit" class="btn btn-info btn-md submit" value="Submit">
                         </div>
                         <div id="register-link" class="text-right">
                             <a href="http://127.0.0.1:8000/signup/" class="text-info">Register here</a>
                         </div>
-                        <p id="error-msg"> {{error}} </p>
                     </form>
                 </div>
             </div>

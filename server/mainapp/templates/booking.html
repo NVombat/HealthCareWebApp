@@ -4,7 +4,6 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<link rel="stylesheet" href="../static/signup.css">
 <title>HealthApp</title>
 
 </head>
@@ -14,11 +13,10 @@
 
 <nav class="navbar navbar-dark bg-primary color">
 
-    <a class="navbar-brand" id="logo" href="/">Health App</a>
+    <a class="navbar-brand" id="logo" href="">Health App</a>
 
     <div class="d-flex">
-        <a class="nav-link active" id="login" href="http://127.0.0.1:8000/login/">Login</a>
-        <a class="nav-link active" id="signup" href="">Sign Up</a>
+        <a class="nav-link active" id="signout" href="/" style="color: white;">Sign Out</a>
     </div>
 
 </nav>
@@ -34,7 +32,7 @@
                         {% csrf_token %}
 
                         <h3 class="text-center text-info">Schedule appointment</h3>
-                        <h6>Booking by: {Insert name here using session variables}</h6>
+                        <h6>Booking by: {{email}}</h6>
                         <div class="form-group">
                             <label for="name" class="text-info">Patient name:</label><br>
                             <input type="text" name="name" id="name" class="form-control" required>
@@ -57,11 +55,12 @@
                               </select>
                         </div>
                         <br>
+                        <p id="error-msg" style="color: red;"> {{error}} </p>
+                        <br>
                         <div class="form-group">
                             <input type="submit" name="Submit" class="btn btn-info btn-md submit" value="Submit">
                         </div>
                         <br>
-                        <p id="error-msg"> {{error}} </p>
                     </form>
                 </div>
             </div>
