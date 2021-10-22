@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
-import hashlib
 import binascii
+import hashlib
 import pymongo
 import os
 
@@ -20,7 +20,7 @@ class UserData:
         Connect to MongoDB
         """
         client = pymongo.MongoClient(DATABASE['mongo_uri'])
-        self.db = client[DATABASE['db']][os.getenv("DATA_COLLECTION")]
+        self.db = client[DATABASE['db']][os.getenv("USER_DATA_COLLECTION")]
 
     def insert_user(self, name: str, email: str, password: str) -> None:
         """Insert user into collection
@@ -96,3 +96,37 @@ class UserData:
             print("User NOT in DB")
             # return False
             raise UserDoesNotExistError("User Does Not Exist")
+
+    def get_name(self, email) -> str:
+        """Fetches Name from db for specific user
+
+        Args:
+            email: Email ID of User
+
+        Returns:
+            str
+        """
+        if value := self.db.find_one({"Email": email}):
+            name = value["Name"]
+            return name
+
+        else:
+            raise UserDoesNotExistError("User Does Not Exist")
+
+
+class AppointmentData:
+    def __init__(self) -> None:
+        """
+        Connect to MongoDB
+        """
+        client = pymongo.MongoClient(DATABASE['mongo_uri'])
+        self.db = client[DATABASE['db']][os.getenv("APPOINTMENT_DATA_COLLECTION")]
+
+    def insert_appointment(self, name: str, desc: str, date: str, doc: str):
+        pass
+
+    def delete_appointment(self):
+        pass
+
+    def update_appointment(self):
+        pass

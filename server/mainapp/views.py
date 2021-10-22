@@ -76,8 +76,19 @@ def login(request):
 
 def booking(request):
     if request.POST:
-        # TODO
-        pass
+
+        booking_data = request.POST.dict()
+
+        print("BOOKING")
+        name = booking_data.get("name")
+        desc = booking_data.get("desc")
+        date = booking_data.get("date")
+        doc = booking_data.get("doctors")
+
+        print(name, desc, date, doc)
+
+        return render(request, "index.html")
+
     else:
         if hasattr(s, "email"):
             return render(request, "booking.html", {"email": s.email})

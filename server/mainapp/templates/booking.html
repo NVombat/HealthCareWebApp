@@ -12,7 +12,6 @@
 <!-- Navbar goes here -->
 
 <nav class="navbar navbar-dark bg-primary color">
-
     <a class="navbar-brand" id="logo" href="">Health App</a>
 
     <div class="d-flex">
@@ -36,23 +35,20 @@
                         <div class="form-group">
                             <label for="name" class="text-info">Patient name:</label><br>
                             <input type="text" name="name" id="name" class="form-control" required>
-                        </div>
-                        <div class="form-group">
+
                             <label for="desc" class="text-info">Health condition description:</label><br>
                             <input type="text" name="desc" id="desc" class="form-control" required>
-                        </div>
-                        <div class="form-group">
+
                             <label for="date" class="text-info">Appointment date:</label><br>
                             <input type="date" name="date" id="date" class="form-control" required>
-                        </div>
-                        <div class="form-group">
+
                             <label for="drop" class="text-info">Request for doctor:</label><br>
-                            <select name="cars" id="cars" class="form-control" style="appearance: default;">
-                                <option value="volvo">DR1</option>
-                                <option value="saab">DR2</option>
-                                <option value="mercedes">DR3</option>
-                                <option value="audi">DR4</option>
-                              </select>
+                            <select name="doctors" id="doctors" class="form-control" style="appearance: default;">
+                                <option value="d1">DR1</option>
+                                <option value="d2">DR2</option>
+                                <option value="d3">DR3</option>
+                                <option value="d4">DR4</option>
+                            </select>
                         </div>
                         <br>
                         <p id="error-msg" style="color: red;"> {{error}} </p>
