@@ -1,5 +1,6 @@
 from .state_data import State
-from .models import UserData
+from .models import AppointmentData, UserData
 
-User = UserData()
 s = State()
+User = UserData()
+Appointment = AppointmentData()

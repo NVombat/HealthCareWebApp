@@ -6,6 +6,9 @@ import os
 
 from core.settings import DATABASE
 from .errors import (
+    AppointmentAlreadyExistsError,
+    AppointmentDoesNotExistError,
+    DoctorUnavailableError,
     InvalidUserCredentialsError,
     UserAlreadyExistsError,
     UserDoesNotExistError,
@@ -120,13 +123,44 @@ class AppointmentData:
         Connect to MongoDB
         """
         client = pymongo.MongoClient(DATABASE['mongo_uri'])
-        self.db = client[DATABASE['db']][os.getenv("APPOINTMENT_DATA_COLLECTION")]
+        self.db = client[DATABASE['db']][os.getenv(
+            "APPOINTMENT_DATA_COLLECTION")]
 
     def insert_appointment(self, name: str, desc: str, date: str, doc: str):
-        pass
+        """Insert appointment into collection
 
-    def delete_appointment(self):
-        pass
+        Args:
+            name: User Name
+            desc: Problem descriptio
+            date: Date of Appointment
+            doc: Doctor
 
-    def update_appointment(self):
-        pass
+        Returns:
+                void: inserts appointment data into db
+        """
+        if self.db.find_one({"Name": name, "Date": date}):
+            raise AppointmentAlreadyExistsError(
+                f"An appointment for {name} already exists on {date}")
+
+        elif self.db.find_one({"Date": date, "Doctor": doc}):
+            raise DoctorUnavailableError(
+                f"Doctor {doc} is unavailable on {date}")
+
+        else:
+            rec = {"Name": name, "Description": desc,
+                   "Date": date, "Doctor": doc}
+            self.db.insert_one(rec)
+
+    def delete_appointment(self, name: str, date: str, doc: str):
+        if self.db.find_one({"Name": name, "Date": date, "Doctor": doc}):
+            self.db.delete_one(
+                {
+                    "Name": name,
+                    "Date": date,
+                    "Doctor": doc,
+                },
+            )
+        else:
+            raise AppointmentDoesNotExistError(
+                "Appointment Does Not Exist For The Current User or Doctor"
+            )
