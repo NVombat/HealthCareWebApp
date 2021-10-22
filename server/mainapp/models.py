@@ -1,11 +1,14 @@
 from dotenv import load_dotenv
-import hashlib
 import binascii
+import hashlib
 import pymongo
 import os
 
 from core.settings import DATABASE
 from .errors import (
+    AppointmentAlreadyExistsError,
+    AppointmentDoesNotExistError,
+    DoctorUnavailableError,
     InvalidUserCredentialsError,
     UserAlreadyExistsError,
     UserDoesNotExistError,
@@ -20,7 +23,7 @@ class UserData:
         Connect to MongoDB
         """
         client = pymongo.MongoClient(DATABASE['mongo_uri'])
-        self.db = client[DATABASE['db']][os.getenv("DATA_COLLECTION")]
+        self.db = client[DATABASE['db']][os.getenv("USER_DATA_COLLECTION")]
 
     def insert_user(self, name: str, email: str, password: str) -> None:
         """Insert user into collection
@@ -96,3 +99,68 @@ class UserData:
             print("User NOT in DB")
             # return False
             raise UserDoesNotExistError("User Does Not Exist")
+
+    def get_name(self, email) -> str:
+        """Fetches Name from db for specific user
+
+        Args:
+            email: Email ID of User
+
+        Returns:
+            str
+        """
+        if value := self.db.find_one({"Email": email}):
+            name = value["Name"]
+            return name
+
+        else:
+            raise UserDoesNotExistError("User Does Not Exist")
+
+
+class AppointmentData:
+    def __init__(self) -> None:
+        """
+        Connect to MongoDB
+        """
+        client = pymongo.MongoClient(DATABASE['mongo_uri'])
+        self.db = client[DATABASE['db']][os.getenv(
+            "APPOINTMENT_DATA_COLLECTION")]
+
+    def insert_appointment(self, name: str, desc: str, date: str, doc: str):
+        """Insert appointment into collection
+
+        Args:
+            name: User Name
+            desc: Problem descriptio
+            date: Date of Appointment
+            doc: Doctor
+
+        Returns:
+                void: inserts appointment data into db
+        """
+        if self.db.find_one({"Name": name, "Date": date}):
+            raise AppointmentAlreadyExistsError(
+                f"An appointment for {name} already exists on {date}")
+
+        elif self.db.find_one({"Date": date, "Doctor": doc}):
+            raise DoctorUnavailableError(
+                f"Doctor {doc} is unavailable on {date}")
+
+        else:
+            rec = {"Name": name, "Description": desc,
+                   "Date": date, "Doctor": doc}
+            self.db.insert_one(rec)
+
+    def delete_appointment(self, name: str, date: str, doc: str):
+        if self.db.find_one({"Name": name, "Date": date, "Doctor": doc}):
+            self.db.delete_one(
+                {
+                    "Name": name,
+                    "Date": date,
+                    "Doctor": doc,
+                },
+            )
+        else:
+            raise AppointmentDoesNotExistError(
+                "Appointment Does Not Exist For The Current User or Doctor"
+            )

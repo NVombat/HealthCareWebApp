@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect
 
 from .errors import (
+    AppointmentAlreadyExistsError,
+    DoctorUnavailableError,
     InvalidUserCredentialsError,
     UserAlreadyExistsError,
     UserDoesNotExistError,
 )
-from . import s, User
+from . import s, User, Appointment
 
 
 def home(request):
@@ -76,8 +78,28 @@ def login(request):
 
 def booking(request):
     if request.POST:
-        # TODO
-        pass
+
+        booking_data = request.POST.dict()
+
+        print("BOOKING")
+        name = booking_data.get("name")
+        desc = booking_data.get("desc")
+        date = booking_data.get("date")
+        doc = booking_data.get("doctors")
+
+        print(name, desc, date, doc)
+
+        try:
+            Appointment.insert_appointment(name, desc, date, doc)
+
+        except AppointmentAlreadyExistsError as aae:
+            return render(request, "booking.html", {"error": str(aae)})
+
+        except DoctorUnavailableError as due:
+            return render(request, "booking.html", {"error": str(due)})
+
+        return render(request, "index.html")
+
     else:
         if hasattr(s, "email"):
             return render(request, "booking.html", {"email": s.email})
