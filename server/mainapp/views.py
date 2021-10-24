@@ -4,6 +4,7 @@ from .errors import (
     AppointmentAlreadyExistsError,
     DoctorUnavailableError,
     InvalidUserCredentialsError,
+    NoAppointmentsError,
     UserAlreadyExistsError,
     UserDoesNotExistError,
 )
@@ -11,6 +12,15 @@ from . import s, User, Appointment
 
 
 def home(request):
+    if hasattr(s, "name"):
+        try:
+            apts = Appointment.fetch_appointments(s.name)
+            print(apts)
+            return render(request, "index.html", data = apts)
+
+        except NoAppointmentsError as npe:
+            return render(request, "index.html", {"error": str(npe)})
+
     return render(request, "index.html")
 
 
@@ -98,7 +108,8 @@ def booking(request):
         except DoctorUnavailableError as due:
             return render(request, "booking.html", {"error": str(due)})
 
-        return render(request, "index.html")
+        s.name = name
+        return redirect("/")
 
     else:
         if hasattr(s, "email"):

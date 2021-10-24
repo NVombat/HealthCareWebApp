@@ -10,6 +10,7 @@ from .errors import (
     AppointmentDoesNotExistError,
     DoctorUnavailableError,
     InvalidUserCredentialsError,
+    NoAppointmentsError,
     UserAlreadyExistsError,
     UserDoesNotExistError,
 )
@@ -164,3 +165,14 @@ class AppointmentData:
             raise AppointmentDoesNotExistError(
                 "Appointment Does Not Exist For The Current User or Doctor"
             )
+
+    def fetch_appointments(self, name: str):
+        if data := self.db.find(
+            {"Name": name},
+            {
+                "_id": 0,
+            },
+        ).sort("Date", -1):
+            return data
+        else:
+            raise NoAppointmentsError("The User Does Not Have Any Appointments")

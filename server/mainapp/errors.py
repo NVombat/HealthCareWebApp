@@ -23,3 +23,7 @@ class AppointmentDoesNotExistError(AppointmentErrors):
 
 class DoctorUnavailableError(AppointmentErrors):
     ...
+
+
+class NoAppointmentsError(AppointmentErrors):
+    ...
