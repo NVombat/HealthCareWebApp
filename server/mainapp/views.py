@@ -16,8 +16,8 @@ def home(request):
         try:
             apts = Appointment.fetch_appointments(s.name)
             print(apts)
-            return render(request, "index.html")
-            # return render(request, "index.html", apts = apts)
+            # return render(request, "index.html")
+            return render(request, "index.html", data = apts)
 
         except NoAppointmentsError as npe:
             return render(request, "index.html", {"error": str(npe)})

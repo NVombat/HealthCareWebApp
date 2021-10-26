@@ -21,6 +21,31 @@
 
 </nav>
 
+<hr>
+
+<section id="flip-box">
+    <h1 class="py-4">Appointments</h1>
+    <div class="wrapper">
+        <table class="stock-table">
+            <tr class="heading">
+                <th>Name</th>
+                <th>Description</th>
+                <th>Doctor</th>
+                <th>Date</th>
+            </tr>
+
+        {% for apt in data %}
+            <tr class="data">
+                <td>{{ apt.Name }}</td>
+                <td>{{ apt.Description }}</td>
+                <td>$ {{ apt.Doctor }}</td>
+                <td>{{ apt.Date }}</td>
+            </tr>
+        {% endfor %}
+        </table>
+    </div>
+</section>
+
 <!-- Body goes here -->
 
 <img class="rounded mx-auto d-block" src="../static/hospital.jpeg" alt="hospital image" id="main">
