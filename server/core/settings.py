@@ -27,9 +27,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("DEBUG_VALUE")
+DEBUG = True if os.getenv("DEBUG_VALUE") else False
+print("DEBUG VALUE:", DEBUG)
 
-ALLOWED_HOSTS = []
+USE_DATABASE = "MONGO" if DEBUG is False else "TEST"
+print("USE_DATABASE:", USE_DATABASE)
+
+
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -86,7 +91,15 @@ WSGI_APPLICATION = 'core.wsgi.application'
 #     }
 # }
 
-DATABASE = {"mongo_uri": os.getenv("MONGO_URI"), "db": os.getenv("MONGO_DB")}
+if USE_DATABASE == "MONGO":
+    DATABASE = {"mongo_uri": os.getenv("MONGO_URI"), "db": os.getenv("MONGO_DB")}
+
+elif USE_DATABASE == "TEST":
+    DATABASE = {
+        "mongo_uri": os.getenv("TEST_MONGO_URI"),
+        "db": os.getenv("TEST_MONGO_DB"),
+    }
+
 print("USING DB: ", DATABASE["db"])
 
 # Password validation
