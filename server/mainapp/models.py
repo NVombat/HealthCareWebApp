@@ -173,6 +173,6 @@ class AppointmentData:
                 "_id": 0,
             },
         ).sort("Date", -1):
-            return data
+            return list(data)
         else:
             raise NoAppointmentsError("The User Does Not Have Any Appointments")
