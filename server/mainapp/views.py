@@ -2,11 +2,12 @@ from django.shortcuts import render, redirect
 
 from .errors import (
     AppointmentAlreadyExistsError,
-    DoctorUnavailableError,
     InvalidUserCredentialsError,
-    NoAppointmentsError,
+    DoctorUnavailableError,
     UserAlreadyExistsError,
     UserDoesNotExistError,
+    NoAppointmentsError,
+    DateInPastError,
 )
 from . import s, User, Appointment
 
@@ -101,6 +102,9 @@ def booking(request):
 
         try:
             Appointment.insert_appointment(name, desc, date, doc)
+
+        except DateInPastError as dpe:
+            return render(request, "booking.html", {"error": str(dpe)})
 
         except AppointmentAlreadyExistsError as aae:
             return render(request, "booking.html", {"error": str(aae)})
