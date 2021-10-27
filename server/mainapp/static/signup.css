@@ -28,7 +28,7 @@ body {
     margin: 100px 0px 180px 150px;
     max-width: 350px;
     height: 500px;
-    box-shadow: 3px 8px 18px 3px red;
+    box-shadow: 3px 8px 18px 3px gray;
     background-color: #EAEAEA;
 }
 
@@ -52,5 +52,5 @@ body {
 
 #footer{
     opacity: 0.7;
-    margin: -20px 0px 0px 0px;
+    margin: 90px 0px 0px 0px;
 }

@@ -23,10 +23,10 @@
 
 <hr>
 
-<section id="flip-box">
-    <h1 class="py-4">Appointments</h1>
+<div id="flip-box">
+    <h1 class="text-center">Appointments</h1>
     <div class="wrapper">
-        <table class="stock-table">
+        <table class="table table-striped table-light">
             <tr class="heading">
                 <th>Name</th>
                 <th>Description</th>
@@ -38,13 +38,13 @@
             <tr class="data">
                 <td>{{ apt.Name }}</td>
                 <td>{{ apt.Description }}</td>
-                <td>$ {{ apt.Doctor }}</td>
+                <td>{{ apt.Doctor }}</td>
                 <td>{{ apt.Date }}</td>
             </tr>
         {% endfor %}
         </table>
     </div>
-</section>
+</div>
 
 <!-- Body goes here -->
 
