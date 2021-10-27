@@ -1,4 +1,5 @@
 from dotenv import load_dotenv
+import datetime as dt
 import binascii
 import hashlib
 import pymongo
@@ -8,11 +9,12 @@ from core.settings import DATABASE
 from .errors import (
     AppointmentAlreadyExistsError,
     AppointmentDoesNotExistError,
-    DoctorUnavailableError,
     InvalidUserCredentialsError,
-    NoAppointmentsError,
+    DoctorUnavailableError,
     UserAlreadyExistsError,
     UserDoesNotExistError,
+    NoAppointmentsError,
+    DateInPastError,
 )
 
 load_dotenv()
@@ -35,7 +37,7 @@ class UserData:
             pwd: User Account Password
 
         Returns:
-                void: inserts user data into db
+                None
         """
         if self.db.find_one({"Email": email}):
             raise UserAlreadyExistsError("User Already Exists")
@@ -127,7 +129,7 @@ class AppointmentData:
         self.db = client[DATABASE['db']][os.getenv(
             "APPOINTMENT_DATA_COLLECTION")]
 
-    def insert_appointment(self, name: str, desc: str, date: str, doc: str):
+    def insert_appointment(self, name: str, desc: str, date: str, doc: str) -> None:
         """Insert appointment into collection
 
         Args:
@@ -137,22 +139,40 @@ class AppointmentData:
             doc: Doctor
 
         Returns:
-                void: inserts appointment data into db
+                None
         """
-        if self.db.find_one({"Name": name, "Date": date}):
-            raise AppointmentAlreadyExistsError(
-                f"An appointment for {name} already exists on {date}")
+        curr_date = dt.datetime.now()
+        print("Current Date:", curr_date)
 
-        elif self.db.find_one({"Date": date, "Doctor": doc}):
-            raise DoctorUnavailableError(
-                f"Doctor {doc} is unavailable on {date}")
+        booking_date = dt.datetime.strptime(date, "%Y-%m-%d")
+        if curr_date > booking_date:
+            raise DateInPastError("Please Book a Future Booking Date")
 
         else:
-            rec = {"Name": name, "Description": desc,
-                   "Date": date, "Doctor": doc}
-            self.db.insert_one(rec)
+            if self.db.find_one({"Name": name, "Date": date}):
+                raise AppointmentAlreadyExistsError(
+                    f"An appointment for {name} already exists on {date}")
 
-    def delete_appointment(self, name: str, date: str, doc: str):
+            elif self.db.find_one({"Date": date, "Doctor": doc}):
+                raise DoctorUnavailableError(
+                    f"Doctor {doc} is unavailable on {date}")
+
+            else:
+                rec = {"Name": name, "Description": desc,
+                    "Date": date, "Doctor": doc}
+                self.db.insert_one(rec)
+
+    def delete_appointment(self, name: str, date: str, doc: str) -> None:
+        """Deletes appointment from collection
+
+        Args:
+            name: User Name
+            date: Date of Appointment
+            doc: Doctor
+
+        Returns:
+                None
+        """
         if self.db.find_one({"Name": name, "Date": date, "Doctor": doc}):
             self.db.delete_one(
                 {
@@ -166,7 +186,15 @@ class AppointmentData:
                 "Appointment Does Not Exist For The Current User or Doctor"
             )
 
-    def fetch_appointments(self, name: str):
+    def fetch_appointments(self, name: str) -> list:
+        """Fetches a list of all appointments for a user
+
+        Args:
+            name: User Name
+
+        Returns:
+                list
+        """
         if data := self.db.find(
             {"Name": name},
             {

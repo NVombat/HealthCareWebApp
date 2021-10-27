@@ -2,11 +2,12 @@ from django.shortcuts import render, redirect
 
 from .errors import (
     AppointmentAlreadyExistsError,
-    DoctorUnavailableError,
     InvalidUserCredentialsError,
-    NoAppointmentsError,
+    DoctorUnavailableError,
     UserAlreadyExistsError,
     UserDoesNotExistError,
+    NoAppointmentsError,
+    DateInPastError,
 )
 from . import s, User, Appointment
 
@@ -16,8 +17,7 @@ def home(request):
         try:
             apts = Appointment.fetch_appointments(s.name)
             print(apts)
-            # return render(request, "index.html")
-            return render(request, "index.html", data = apts)
+            return render(request, "appointments.html", {"data" : apts})
 
         except NoAppointmentsError as npe:
             return render(request, "index.html", {"error": str(npe)})
@@ -102,6 +102,9 @@ def booking(request):
 
         try:
             Appointment.insert_appointment(name, desc, date, doc)
+
+        except DateInPastError as dpe:
+            return render(request, "booking.html", {"error": str(dpe)})
 
         except AppointmentAlreadyExistsError as aae:
             return render(request, "booking.html", {"error": str(aae)})

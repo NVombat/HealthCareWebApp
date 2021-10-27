@@ -27,3 +27,7 @@ class DoctorUnavailableError(AppointmentErrors):
 
 class NoAppointmentsError(AppointmentErrors):
     ...
+
+
+class DateInPastError(AppointmentErrors):
+    ...

@@ -15,19 +15,37 @@
     <a class="navbar-brand" id="logo" href="/">Health App</a>
 
     <div class="d-flex">
-        <a class="nav-link active" id="login" href="login">Login</a>
-        <a class="nav-link active" id="signup" href="signup">Sign Up</a>
+        <a class="nav-link active" id="signout" href="login" style="color: white;">Sign Out</a>
     </div>
 
 </nav>
 
-<!-- Body goes here -->
+<hr>
 
-<img class="rounded mx-auto d-block" src="../static/hospital.jpeg" alt="hospital image" id="main">
+<div id="flip-box">
+    <h1 class="text-center">Appointments</h1>
+    <div class="wrapper">
+        <table class="table table-striped table-light">
+            <tr class="heading">
+                <th>Name</th>
+                <th>Description</th>
+                <th>Doctor</th>
+                <th>Date</th>
+            </tr>
 
-<!-- Footer goes here -->
+        {% for apt in data %}
+            <tr class="data">
+                <td>{{ apt.Name }}</td>
+                <td>{{ apt.Description }}</td>
+                <td>{{ apt.Doctor }}</td>
+                <td>{{ apt.Date }}</td>
+            </tr>
+        {% endfor %}
+        </table>
+    </div>
+</div>
 
-<footer class="navbar-dark bg-primary text-center text-lg-start p-3" id="footer">
+<footer class="navbar-dark bg-primary text-center text-lg-start p-3" id="footer" style="margin-bottom: -200px;">
     <div class="text-center " style="color: aliceblue;">
       © 2021 Copyright:
       <a class="" href="#" style="color: aliceblue;">Health App</a>
