@@ -1,2 +1,2 @@
-# HealthCareWebApp
-Web Application For Health Care Management
+# HealthCare WebApp
+Web Application For Appointment Management
