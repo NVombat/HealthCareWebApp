@@ -1,5 +1,5 @@
 asgiref==3.4.1
-Django==3.2.23
+Django==3.2.24
 djangorestframework==3.12.4
 dnspython==2.1.0
 pymongo==3.12.0
